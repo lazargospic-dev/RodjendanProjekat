@@ -48,11 +48,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\DBHelper.cs" />
+    <Compile Include="Forms\DodatneUslugeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DodatneUslugeForm.Designer.cs">
+      <DependentUpon>DodatneUslugeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\KlijentiForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\KlijentiForm.Designer.cs">
       <DependentUpon>KlijentiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
@@ -60,11 +72,35 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RezervacijeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RezervacijeForm.Designer.cs">
+      <DependentUpon>RezervacijeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SaleForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SaleForm.Designer.cs">
       <DependentUpon>SaleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SignUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SignUpForm.Designer.cs">
+      <DependentUpon>SignUpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SlavljeniciForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SlavljeniciForm.Designer.cs">
+      <DependentUpon>SlavljeniciForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UplateForm.Designer.cs">
+      <DependentUpon>UplateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ZaposleniForm.cs">
       <SubType>Form</SubType>
@@ -88,14 +124,32 @@
     <Compile Include="Repositories\SlavljenikRepository.cs" />
     <Compile Include="Repositories\UplataRepository.cs" />
     <Compile Include="Repositories\ZaposleniRepository.cs" />
+    <EmbeddedResource Include="Forms\DodatneUslugeForm.resx">
+      <DependentUpon>DodatneUslugeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\KlijentiForm.resx">
       <DependentUpon>KlijentiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RezervacijeForm.resx">
+      <DependentUpon>RezervacijeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SaleForm.resx">
       <DependentUpon>SaleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SlavljeniciForm.resx">
+      <DependentUpon>SlavljeniciForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UplateForm.resx">
+      <DependentUpon>UplateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZaposleniForm.resx">
+      <DependentUpon>ZaposleniForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

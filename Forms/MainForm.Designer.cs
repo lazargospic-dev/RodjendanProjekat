@@ -41,16 +41,16 @@
             // lblNaslov
             // 
             this.lblNaslov.AutoSize = true;
-            this.lblNaslov.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNaslov.Location = new System.Drawing.Point(65, 28);
+            this.lblNaslov.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNaslov.Location = new System.Drawing.Point(60, 20);
             this.lblNaslov.Name = "lblNaslov";
-            this.lblNaslov.Size = new System.Drawing.Size(272, 30);
+            this.lblNaslov.Size = new System.Drawing.Size(248, 25);
             this.lblNaslov.TabIndex = 0;
             this.lblNaslov.Text = "Organizovanje Rođendana";
             // 
             // btnKlijenti
             // 
-            this.btnKlijenti.Location = new System.Drawing.Point(57, 85);
+            this.btnKlijenti.Location = new System.Drawing.Point(60, 80);
             this.btnKlijenti.Name = "btnKlijenti";
             this.btnKlijenti.Size = new System.Drawing.Size(280, 40);
             this.btnKlijenti.TabIndex = 1;
@@ -60,7 +60,7 @@
             // 
             // btnSlavljenici
             // 
-            this.btnSlavljenici.Location = new System.Drawing.Point(57, 131);
+            this.btnSlavljenici.Location = new System.Drawing.Point(60, 130);
             this.btnSlavljenici.Name = "btnSlavljenici";
             this.btnSlavljenici.Size = new System.Drawing.Size(280, 40);
             this.btnSlavljenici.TabIndex = 2;
@@ -70,7 +70,7 @@
             // 
             // btnSale
             // 
-            this.btnSale.Location = new System.Drawing.Point(57, 177);
+            this.btnSale.Location = new System.Drawing.Point(60, 180);
             this.btnSale.Name = "btnSale";
             this.btnSale.Size = new System.Drawing.Size(280, 40);
             this.btnSale.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             // btnZaposleni
             // 
-            this.btnZaposleni.Location = new System.Drawing.Point(57, 223);
+            this.btnZaposleni.Location = new System.Drawing.Point(60, 230);
             this.btnZaposleni.Name = "btnZaposleni";
             this.btnZaposleni.Size = new System.Drawing.Size(280, 40);
             this.btnZaposleni.TabIndex = 4;
@@ -90,7 +90,7 @@
             // 
             // btnUsluge
             // 
-            this.btnUsluge.Location = new System.Drawing.Point(57, 269);
+            this.btnUsluge.Location = new System.Drawing.Point(60, 280);
             this.btnUsluge.Name = "btnUsluge";
             this.btnUsluge.Size = new System.Drawing.Size(280, 40);
             this.btnUsluge.TabIndex = 5;
@@ -100,7 +100,7 @@
             // 
             // btnRezervacije
             // 
-            this.btnRezervacije.Location = new System.Drawing.Point(57, 315);
+            this.btnRezervacije.Location = new System.Drawing.Point(60, 330);
             this.btnRezervacije.Name = "btnRezervacije";
             this.btnRezervacije.Size = new System.Drawing.Size(280, 40);
             this.btnRezervacije.TabIndex = 6;
@@ -110,7 +110,7 @@
             // 
             // btnUplate
             // 
-            this.btnUplate.Location = new System.Drawing.Point(57, 361);
+            this.btnUplate.Location = new System.Drawing.Point(60, 380);
             this.btnUplate.Name = "btnUplate";
             this.btnUplate.Size = new System.Drawing.Size(280, 40);
             this.btnUplate.TabIndex = 7;
@@ -122,7 +122,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 461);
+            this.ClientSize = new System.Drawing.Size(404, 511);
             this.Controls.Add(this.btnUplate);
             this.Controls.Add(this.btnRezervacije);
             this.Controls.Add(this.btnUsluge);
@@ -133,7 +133,7 @@
             this.Controls.Add(this.lblNaslov);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rodjendani - Glavni Meni";
+            this.Text = "Rođendani - Glavni Meni";
             this.ResumeLayout(false);
             this.PerformLayout();
 

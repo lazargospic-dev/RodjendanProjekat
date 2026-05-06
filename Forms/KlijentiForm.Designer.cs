@@ -186,7 +186,6 @@
             this.Controls.Add(this.dgvKlijenti);
             this.Name = "KlijentiForm";
             this.Text = "Klijenti";
-            this.Load += new System.EventHandler(this.KlijentiForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvKlijenti)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
