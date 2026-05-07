@@ -30,7 +30,6 @@ namespace RodjendanProjekat.Forms
         {
 
         }
-
         private void LoadComboBoxes()
         {
             cmbKlijent.DataSource = klijentRepo.GetAll();
@@ -46,10 +45,11 @@ namespace RodjendanProjekat.Forms
 
         private void FilterSlavljenici()
         {
-            if (cmbKlijent.SelectedValue == null) return;
-            int klijentId = (int)cmbKlijent.SelectedValue;
+            var klijent = cmbKlijent.SelectedItem as Klijent;
+            if (klijent == null) return;
+
             var sviSlavljenici = slavljenikRepo.GetAll();
-            cmbSlavljenik.DataSource = sviSlavljenici.FindAll(s => s.KlijentId == klijentId);
+            cmbSlavljenik.DataSource = sviSlavljenici.FindAll(s => s.KlijentId == klijent.KlijentId);
             cmbSlavljenik.DisplayMember = "Ime";
             cmbSlavljenik.ValueMember = "SlavljenikId";
         }
@@ -71,10 +71,17 @@ namespace RodjendanProjekat.Forms
                 numBrojDece.Value = r.BrojDece;
                 txtIznos.Text = r.UkupanIznos.ToString();
                 cmbStatus.Text = r.Status;
-                cmbKlijent.SelectedValue = r.KlijentId;
+
+                foreach (Klijent k in cmbKlijent.Items)
+                    if (k.KlijentId == r.KlijentId) { cmbKlijent.SelectedItem = k; break; }
+
                 FilterSlavljenici();
-                cmbSlavljenik.SelectedValue = r.SlavljenikId;
-                cmbSala.SelectedValue = r.SalaId;
+
+                foreach (Slavljenik s in cmbSlavljenik.Items)
+                    if (s.SlavljenikId == r.SlavljenikId) { cmbSlavljenik.SelectedItem = s; break; }
+
+                foreach (Sala sa in cmbSala.Items)
+                    if (sa.SalaId == r.SalaId) { cmbSala.SelectedItem = sa; break; }
             }
         }
 
@@ -87,8 +94,13 @@ namespace RodjendanProjekat.Forms
         {
             try
             {
-                if (cmbSlavljenik.SelectedValue == null) { MessageBox.Show("Odaberi slavljenika!"); return; }
-                if (cmbSala.SelectedValue == null) { MessageBox.Show("Odaberi salu!"); return; }
+                var klijent = cmbKlijent.SelectedItem as Klijent;
+                var slavljenik = cmbSlavljenik.SelectedItem as Slavljenik;
+                var sala = cmbSala.SelectedItem as Sala;
+
+                if (klijent == null) { MessageBox.Show("Odaberi klijenta!"); return; }
+                if (slavljenik == null) { MessageBox.Show("Odaberi slavljenika!"); return; }
+                if (sala == null) { MessageBox.Show("Odaberi salu!"); return; }
 
                 repo.Insert(new Rezervacija
                 {
@@ -98,9 +110,9 @@ namespace RodjendanProjekat.Forms
                     BrojDece = (int)numBrojDece.Value,
                     UkupanIznos = decimal.Parse(string.IsNullOrEmpty(txtIznos.Text) ? "0" : txtIznos.Text),
                     Status = string.IsNullOrEmpty(cmbStatus.Text) ? "Rezervisano" : cmbStatus.Text,
-                    KlijentId = (int)cmbKlijent.SelectedValue,
-                    SlavljenikId = (int)cmbSlavljenik.SelectedValue,
-                    SalaId = (int)cmbSala.SelectedValue
+                    KlijentId = klijent.KlijentId,
+                    SlavljenikId = slavljenik.SlavljenikId,
+                    SalaId = sala.SalaId
                 });
                 LoadData();
                 Clear();
@@ -114,6 +126,16 @@ namespace RodjendanProjekat.Forms
             if (selectedId == null) { MessageBox.Show("Selektuj red!"); return; }
             try
             {
+                var klijent = cmbKlijent.SelectedItem as Klijent;
+                var slavljenik = cmbSlavljenik.SelectedItem as Slavljenik;
+                var sala = cmbSala.SelectedItem as Sala;
+
+                if (klijent == null || slavljenik == null || sala == null)
+                {
+                    MessageBox.Show("Odaberi sve vrednosti!");
+                    return;
+                }
+
                 repo.Update(new Rezervacija
                 {
                     RezervacijaId = selectedId.Value,
@@ -123,9 +145,9 @@ namespace RodjendanProjekat.Forms
                     BrojDece = (int)numBrojDece.Value,
                     UkupanIznos = decimal.Parse(string.IsNullOrEmpty(txtIznos.Text) ? "0" : txtIznos.Text),
                     Status = cmbStatus.Text,
-                    KlijentId = (int)cmbKlijent.SelectedValue,
-                    SlavljenikId = (int)cmbSlavljenik.SelectedValue,
-                    SalaId = (int)cmbSala.SelectedValue
+                    KlijentId = klijent.KlijentId,
+                    SlavljenikId = slavljenik.SlavljenikId,
+                    SalaId = sala.SalaId
                 });
                 LoadData();
                 Clear();

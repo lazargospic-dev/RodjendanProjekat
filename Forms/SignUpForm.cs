@@ -28,7 +28,7 @@ namespace RodjendanProjekat.Forms
 
                 if (string.IsNullOrEmpty(ime) || string.IsNullOrEmpty(prezime) || string.IsNullOrEmpty(korisnicko) || string.IsNullOrEmpty(sifra))
                 {
-                    MessageBox.Show("Popunite obavezna polja: Ime, Prezime, Korisni?ko ime i Šifra.");
+                    MessageBox.Show("Popunite obavezna polja: Ime, Prezime, Korisnicko ime i Šifra.");
                     return;
                 }
 

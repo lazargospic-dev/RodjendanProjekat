@@ -12,6 +12,14 @@ namespace RodjendanProjekat.Forms
         private RezervacijaRepository rezervacijaRepo = new RezervacijaRepository();
         private int? selectedId = null;
 
+        // Pomoćna klasa za ComboBox
+        private class RezervacijaPrikaz
+        {
+            public int RezervacijaId { get; set; }
+            public string Prikaz { get; set; }
+            public override string ToString() => Prikaz;
+        }
+
         public UplateForm()
         {
             InitializeComponent();
@@ -22,9 +30,9 @@ namespace RodjendanProjekat.Forms
         private void LoadRezervacije()
         {
             var rezervacije = rezervacijaRepo.GetAll()
-                .Select(r => new
+                .Select(r => new RezervacijaPrikaz
                 {
-                    r.RezervacijaId,
+                    RezervacijaId = r.RezervacijaId,
                     Prikaz = $"#{r.RezervacijaId} - {r.KlijentImePrezime} ({r.Datum:dd.MM.yyyy})"
                 }).ToList();
 
@@ -44,7 +52,10 @@ namespace RodjendanProjekat.Forms
             if (dgvUplate.CurrentRow?.DataBoundItem is Uplata u)
             {
                 selectedId = u.UplataId;
-                cmbRezervacija.SelectedValue = u.RezervacijaId;
+
+                foreach (RezervacijaPrikaz r in cmbRezervacija.Items)
+                    if (r.RezervacijaId == u.RezervacijaId) { cmbRezervacija.SelectedItem = r; break; }
+
                 dtpDatumUplate.Value = u.DatumUplate;
                 txtIznos.Text = u.Iznos.ToString();
                 cmbNacinPlacanja.Text = u.NacinPlacanja;
@@ -55,12 +66,13 @@ namespace RodjendanProjekat.Forms
         {
             try
             {
-                if (cmbRezervacija.SelectedValue == null) { MessageBox.Show("Odaberi rezervaciju!"); return; }
+                var rez = cmbRezervacija.SelectedItem as RezervacijaPrikaz;
+                if (rez == null) { MessageBox.Show("Odaberi rezervaciju!"); return; }
                 if (string.IsNullOrWhiteSpace(txtIznos.Text)) { MessageBox.Show("Unesi iznos!"); return; }
 
                 repo.Insert(new Uplata
                 {
-                    RezervacijaId = (int)cmbRezervacija.SelectedValue,
+                    RezervacijaId = rez.RezervacijaId,
                     DatumUplate = dtpDatumUplate.Value.Date,
                     Iznos = decimal.Parse(txtIznos.Text),
                     NacinPlacanja = cmbNacinPlacanja.Text

@@ -10,7 +10,6 @@ namespace RodjendanProjekat
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            // Show login first. If login succeeds, open MainForm.
             using (var login = new Forms.LoginForm())
             {
                 var res = login.ShowDialog();

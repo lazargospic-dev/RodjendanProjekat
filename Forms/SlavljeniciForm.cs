@@ -39,7 +39,10 @@ namespace RodjendanProjekat.Forms
                 txtIme.Text = s.Ime;
                 dtpDatumRodjenja.Value = s.DatumRodjenja;
                 cmbPol.Text = s.Pol;
-                cmbKlijent.SelectedValue = s.KlijentId;
+
+                // Pronađi klijenta po Id-u
+                foreach (Klijent k in cmbKlijent.Items)
+                    if (k.KlijentId == s.KlijentId) { cmbKlijent.SelectedItem = k; break; }
             }
         }
 
@@ -48,14 +51,15 @@ namespace RodjendanProjekat.Forms
             try
             {
                 if (string.IsNullOrWhiteSpace(txtIme.Text)) { MessageBox.Show("Unesi ime!"); return; }
-                if (cmbKlijent.SelectedValue == null) { MessageBox.Show("Odaberi klijenta!"); return; }
+                var klijent = cmbKlijent.SelectedItem as Klijent;
+                if (klijent == null) { MessageBox.Show("Odaberi klijenta!"); return; }
 
                 repo.Insert(new Slavljenik
                 {
                     Ime = txtIme.Text,
                     DatumRodjenja = dtpDatumRodjenja.Value,
                     Pol = cmbPol.Text,
-                    KlijentId = (int)cmbKlijent.SelectedValue
+                    KlijentId = klijent.KlijentId
                 });
                 LoadData();
                 Clear();
@@ -69,13 +73,16 @@ namespace RodjendanProjekat.Forms
             if (selectedId == null) { MessageBox.Show("Selektuj red!"); return; }
             try
             {
+                var klijent = cmbKlijent.SelectedItem as Klijent;
+                if (klijent == null) { MessageBox.Show("Odaberi klijenta!"); return; }
+
                 repo.Update(new Slavljenik
                 {
                     SlavljenikId = selectedId.Value,
                     Ime = txtIme.Text,
                     DatumRodjenja = dtpDatumRodjenja.Value,
                     Pol = cmbPol.Text,
-                    KlijentId = (int)cmbKlijent.SelectedValue
+                    KlijentId = klijent.KlijentId
                 });
                 LoadData();
                 Clear();
