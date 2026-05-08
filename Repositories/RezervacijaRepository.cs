@@ -98,5 +98,126 @@ namespace RodjendanProjekat.Repositories
                 cmd.ExecuteNonQuery();
             }
         }
+        public void UpdateStatus(int rezervacijaId, string noviStatus)
+        {
+            using (var con = DBHelper.GetConnection())
+            {
+                con.Open();
+                var cmd = new SqlCommand("UPDATE rezervacije SET status=@s WHERE rezervacija_id=@id", con);
+                cmd.Parameters.AddWithValue("@s", noviStatus);
+                cmd.Parameters.AddWithValue("@id", rezervacijaId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public Rezervacija GetById(int id)
+        {
+            using (var con = DBHelper.GetConnection())
+            {
+                con.Open();
+                var cmd = new SqlCommand("SELECT * FROM rezervacije WHERE rezervacija_id=@id", con);
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        return new Rezervacija
+                        {
+                            RezervacijaId = (int)dr["rezervacija_id"],
+                            Datum = (System.DateTime)dr["datum"],
+                            VremeOd = (System.TimeSpan)dr["vreme_od"],
+                            VremeDo = (System.TimeSpan)dr["vreme_do"],
+                            BrojDece = (int)dr["broj_dece"],
+                            UkupanIznos = (decimal)dr["ukupan_iznos"],
+                            Status = dr["status"].ToString(),
+                            KlijentId = (int)dr["klijent_id"],
+                            SlavljenikId = (int)dr["slavljenik_id"],
+                            SalaId = (int)dr["sala_id"]
+                        };
+                    }
+                }
+                return null;
+            }
+        }
+        public bool PostojiIdenticna(Rezervacija r, int? ignoreId = null)
+        {
+            using (var con = DBHelper.GetConnection())
+            {
+                con.Open();
+                string sql = @"SELECT COUNT(*) FROM rezervacije 
+                       WHERE klijent_id=@k AND slavljenik_id=@sl AND sala_id=@sa 
+                       AND datum=@d AND vreme_od=@vo AND vreme_do=@vd";
+                if (ignoreId.HasValue) sql += " AND rezervacija_id<>@id";
+
+                var cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@k", r.KlijentId);
+                cmd.Parameters.AddWithValue("@sl", r.SlavljenikId);
+                cmd.Parameters.AddWithValue("@sa", r.SalaId);
+                cmd.Parameters.AddWithValue("@d", r.Datum);
+                cmd.Parameters.AddWithValue("@vo", r.VremeOd);
+                cmd.Parameters.AddWithValue("@vd", r.VremeDo);
+                if (ignoreId.HasValue) cmd.Parameters.AddWithValue("@id", ignoreId.Value);
+
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        public Rezervacija PronadjiKolizijuSale(Rezervacija r, int? ignoreId = null)
+        {
+            using (var con = DBHelper.GetConnection())
+            {
+                con.Open();
+                string sql = @"SELECT TOP 1 r.*, 
+                              k.ime + ' ' + k.prezime AS klijent_full,
+                              s.ime AS slavljenik_ime,
+                              sa.naziv AS sala_naziv
+                       FROM rezervacije r
+                       JOIN klijenti k ON r.klijent_id = k.klijent_id
+                       JOIN slavljenici s ON r.slavljenik_id = s.slavljenik_id
+                       JOIN sale sa ON r.sala_id = sa.sala_id
+                       WHERE r.sala_id = @sa 
+                         AND r.datum = @d 
+                         AND r.status <> 'Otkazano'
+                         AND r.vreme_od < @vd 
+                         AND r.vreme_do > @vo";
+                if (ignoreId.HasValue) sql += " AND r.rezervacija_id <> @id";
+
+                var cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@sa", r.SalaId);
+                cmd.Parameters.AddWithValue("@d", r.Datum);
+                cmd.Parameters.AddWithValue("@vo", r.VremeOd);
+                cmd.Parameters.AddWithValue("@vd", r.VremeDo);
+                if (ignoreId.HasValue) cmd.Parameters.AddWithValue("@id", ignoreId.Value);
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        return new Rezervacija
+                        {
+                            RezervacijaId = (int)dr["rezervacija_id"],
+                            Datum = (System.DateTime)dr["datum"],
+                            VremeOd = (System.TimeSpan)dr["vreme_od"],
+                            VremeDo = (System.TimeSpan)dr["vreme_do"],
+                            BrojDece = (int)dr["broj_dece"],
+                            UkupanIznos = (decimal)dr["ukupan_iznos"],
+                            Status = dr["status"].ToString(),
+                            KlijentId = (int)dr["klijent_id"],
+                            SlavljenikId = (int)dr["slavljenik_id"],
+                            SalaId = (int)dr["sala_id"],
+                            KlijentImePrezime = dr["klijent_full"].ToString(),
+                            SlavljenikIme = dr["slavljenik_ime"].ToString(),
+                            SalaNaziv = dr["sala_naziv"].ToString()
+                        };
+                    }
+                }
+                return null;
+            }
+        }
+
+        public bool SalaZauzeta(Rezervacija r, int? ignoreId = null)
+        {
+            return PronadjiKolizijuSale(r, ignoreId) != null;
+        }
     }
 }

@@ -40,7 +40,6 @@ namespace RodjendanProjekat.Forms
                 dtpDatumRodjenja.Value = s.DatumRodjenja;
                 cmbPol.Text = s.Pol;
 
-                // Pronađi klijenta po Id-u
                 foreach (Klijent k in cmbKlijent.Items)
                     if (k.KlijentId == s.KlijentId) { cmbKlijent.SelectedItem = k; break; }
             }

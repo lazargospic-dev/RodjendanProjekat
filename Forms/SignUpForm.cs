@@ -1,13 +1,13 @@
-using RodjendanProjekat.Repositories;
-using System.Data.SqlClient;
+﻿using RodjendanProjekat.Repositories;
 using System;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace RodjendanProjekat.Forms
 {
     public partial class SignUpForm : Form
     {
-        private readonly KlijentRepository _repo = new KlijentRepository();
+        private readonly KorisnikRepository _repo = new KorisnikRepository();
 
         public SignUpForm()
         {
@@ -26,20 +26,28 @@ namespace RodjendanProjekat.Forms
                 var korisnicko = txtUser.Text.Trim();
                 var sifra = txtPassword.Text;
 
-                if (string.IsNullOrEmpty(ime) || string.IsNullOrEmpty(prezime) || string.IsNullOrEmpty(korisnicko) || string.IsNullOrEmpty(sifra))
+                if (string.IsNullOrEmpty(ime) || string.IsNullOrEmpty(prezime) ||
+                    string.IsNullOrEmpty(korisnicko) || string.IsNullOrEmpty(sifra))
                 {
-                    MessageBox.Show("Popunite obavezna polja: Ime, Prezime, Korisnicko ime i �ifra.");
+                    MessageBox.Show("Popunite obavezna polja: Ime, Prezime, Korisničko ime i Šifra.");
+                    return;
+                }
+
+                if (_repo.PostojiUsername(korisnicko))
+                {
+                    MessageBox.Show("Korisničko ime '" + korisnicko + "' već postoji! Izaberi drugo.");
                     return;
                 }
 
                 _repo.Register(ime, prezime, telefon, email, napomena, korisnicko, sifra);
-                MessageBox.Show("Uspe�na registracija.");
+
+                MessageBox.Show("Uspešna registracija.");
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (SqlException ex)
             {
-                MessageBox.Show("Gre�ka u bazi podataka: " + ex.Message);
+                MessageBox.Show("Greška u bazi podataka: " + ex.Message);
             }
             catch (Exception ex)
             {

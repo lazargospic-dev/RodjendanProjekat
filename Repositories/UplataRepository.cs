@@ -53,5 +53,15 @@ namespace RodjendanProjekat.Repositories
                 cmd.ExecuteNonQuery();
             }
         }
+        public decimal UkupnoPlaceno(int rezervacijaId)
+        {
+            using (var con = DBHelper.GetConnection())
+            {
+                con.Open();
+                var cmd = new SqlCommand("SELECT ISNULL(SUM(iznos),0) FROM uplate WHERE rezervacija_id=@id", con);
+                cmd.Parameters.AddWithValue("@id", rezervacijaId);
+                return (decimal)cmd.ExecuteScalar();
+            }
+        }
     }
 }

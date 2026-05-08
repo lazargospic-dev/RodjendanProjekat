@@ -102,7 +102,7 @@ namespace RodjendanProjekat.Forms
                 if (slavljenik == null) { MessageBox.Show("Odaberi slavljenika!"); return; }
                 if (sala == null) { MessageBox.Show("Odaberi salu!"); return; }
 
-                repo.Insert(new Rezervacija
+                Rezervacija novaRezervacija = new Rezervacija
                 {
                     Datum = dtpDatum.Value.Date,
                     VremeOd = dtpVremeOd.Value.TimeOfDay,
@@ -113,10 +113,43 @@ namespace RodjendanProjekat.Forms
                     KlijentId = klijent.KlijentId,
                     SlavljenikId = slavljenik.SlavljenikId,
                     SalaId = sala.SalaId
-                });
+                };
+
+                if (novaRezervacija.VremeDo <= novaRezervacija.VremeOd)
+                {
+                    MessageBox.Show("Vreme završetka mora biti posle vremena početka!", "Neispravno vreme",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (repo.PostojiIdenticna(novaRezervacija))
+                {
+                    MessageBox.Show("Identična rezervacija već postoji!", "Duplikat",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var konflikt = repo.PronadjiKolizijuSale(novaRezervacija);
+                if (konflikt != null)
+                {
+                    string poruka =
+                        $" Sala je već zauzeta u tom terminu!\n\n" +
+                        $" Sala: {konflikt.SalaNaziv}\n" +
+                        $" Datum: {konflikt.Datum:dd.MM.yyyy}\n" +
+                        $" Vreme: {konflikt.VremeOd:hh\\:mm} - {konflikt.VremeDo:hh\\:mm}\n" +
+                        $" Klijent: {konflikt.KlijentImePrezime}\n" +
+                        $" Slavljenik: {konflikt.SlavljenikIme}\n\n" +
+                        $"Izaberi drugi termin ili drugu salu.";
+
+                    MessageBox.Show(poruka, "Sala zauzeta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                repo.Insert(novaRezervacija);
                 LoadData();
                 Clear();
-                MessageBox.Show("Rezervacija dodata!");
+                MessageBox.Show(" Rezervacija uspešno dodata!", "Uspeh",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex) { MessageBox.Show("Greška: " + ex.Message); }
         }
@@ -136,7 +169,7 @@ namespace RodjendanProjekat.Forms
                     return;
                 }
 
-                repo.Update(new Rezervacija
+                Rezervacija izmenjenaRezervacija = new Rezervacija
                 {
                     RezervacijaId = selectedId.Value,
                     Datum = dtpDatum.Value.Date,
@@ -148,9 +181,39 @@ namespace RodjendanProjekat.Forms
                     KlijentId = klijent.KlijentId,
                     SlavljenikId = slavljenik.SlavljenikId,
                     SalaId = sala.SalaId
-                });
+                };
+
+                if (izmenjenaRezervacija.VremeDo <= izmenjenaRezervacija.VremeOd)
+                {
+                    MessageBox.Show("Vreme završetka mora biti posle vremena početka!");
+                    return;
+                }
+
+                if (repo.PostojiIdenticna(izmenjenaRezervacija, ignoreId: selectedId.Value))
+                {
+                    MessageBox.Show("Identična rezervacija već postoji!");
+                    return;
+                }
+                var konflikt = repo.PronadjiKolizijuSale(izmenjenaRezervacija, ignoreId: selectedId.Value);
+                if (konflikt != null)
+                {
+                    string poruka =
+                        $"Sala je već zauzeta u tom terminu!\n\n" +
+                        $"Sala: {konflikt.SalaNaziv}\n" +
+                        $"Datum: {konflikt.Datum:dd.MM.yyyy}\n" +
+                        $"Vreme: {konflikt.VremeOd:hh\\:mm} - {konflikt.VremeDo:hh\\:mm}\n" +
+                        $"Klijent: {konflikt.KlijentImePrezime}\n" +
+                        $"Slavljenik: {konflikt.SlavljenikIme}\n\n" +
+                        $"Izaberi drugi termin ili drugu salu.";
+
+                    MessageBox.Show(poruka, "Sala zauzeta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                repo.Update(izmenjenaRezervacija);
                 LoadData();
                 Clear();
+                MessageBox.Show(" Rezervacija izmenjena!");
             }
             catch (Exception ex) { MessageBox.Show("Greška: " + ex.Message); }
         }

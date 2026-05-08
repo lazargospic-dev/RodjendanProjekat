@@ -109,6 +109,7 @@
       <DependentUpon>ZaposleniForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DodatnaUsluga.cs" />
+    <Compile Include="Models\Korisnik.cs" />
     <Compile Include="Models\Rezervacija.cs" />
     <Compile Include="Models\Uplata.cs" />
     <Compile Include="Models\Zaposleni.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DodatnaUslugaRepository.cs" />
     <Compile Include="Repositories\KlijentRepository.cs" />
+    <Compile Include="Repositories\KorisnikRepository.cs" />
     <Compile Include="Repositories\RezervacijaRepository.cs" />
     <Compile Include="Repositories\SalaRepository.cs" />
     <Compile Include="Repositories\SlavljenikRepository.cs" />
@@ -173,6 +175,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Database\setup.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

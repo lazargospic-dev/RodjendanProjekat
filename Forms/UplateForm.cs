@@ -12,7 +12,6 @@ namespace RodjendanProjekat.Forms
         private RezervacijaRepository rezervacijaRepo = new RezervacijaRepository();
         private int? selectedId = null;
 
-        // Pomoćna klasa za ComboBox
         private class RezervacijaPrikaz
         {
             public int RezervacijaId { get; set; }
@@ -70,16 +69,51 @@ namespace RodjendanProjekat.Forms
                 if (rez == null) { MessageBox.Show("Odaberi rezervaciju!"); return; }
                 if (string.IsNullOrWhiteSpace(txtIznos.Text)) { MessageBox.Show("Unesi iznos!"); return; }
 
+                decimal iznos;
+                if (!decimal.TryParse(txtIznos.Text, out iznos) || iznos <= 0)
+                {
+                    MessageBox.Show("Iznos mora biti broj veći od 0!");
+                    return;
+                }
+
+                var trenutnaRez = rezervacijaRepo.GetById(rez.RezervacijaId);
+                if (trenutnaRez == null)
+                {
+                    MessageBox.Show("Rezervacija nije pronađena!");
+                    return;
+                }
+
+                decimal vecPlaceno = repo.UkupnoPlaceno(rez.RezervacijaId);
+                if (vecPlaceno >= trenutnaRez.UkupanIznos)
+                {
+                    MessageBox.Show("Rezervacija je već u potpunosti plaćena!");
+                    return;
+                }
+
                 repo.Insert(new Uplata
                 {
                     RezervacijaId = rez.RezervacijaId,
                     DatumUplate = dtpDatumUplate.Value.Date,
-                    Iznos = decimal.Parse(txtIznos.Text),
+                    Iznos = iznos,
                     NacinPlacanja = cmbNacinPlacanja.Text
                 });
+
+                decimal noviZbir = repo.UkupnoPlaceno(rez.RezervacijaId);
+
+                if (noviZbir >= trenutnaRez.UkupanIznos)
+                {
+                    rezervacijaRepo.UpdateStatus(rez.RezervacijaId, "Plaćeno");
+                    MessageBox.Show($"Uplata zabeležena!\nRezervacija je u potpunosti plaćena.");
+                }
+                else
+                {
+                    decimal preostalo = trenutnaRez.UkupanIznos - noviZbir;
+                    MessageBox.Show($"Uplata zabeležena!\nPreostalo za uplatu: {preostalo} RSD");
+                }
+
                 LoadData();
+                LoadRezervacije();
                 Clear();
-                MessageBox.Show("Uplata zabeležena!");
             }
             catch (Exception ex) { MessageBox.Show("Greška: " + ex.Message); }
         }
