@@ -20,6 +20,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvKlijenti.DataSource = null;
             dgvKlijenti.DataSource = repo.GetAll();
+            dgvKlijenti.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvKlijenti_SelectionChanged(object sender, EventArgs e)
@@ -32,6 +35,11 @@ namespace RodjendanProjekat.Forms
                 txtTelefon.Text = k.Telefon;
                 txtEmail.Text = k.Email;
                 txtNapomena.Text = k.Napomena;
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
 

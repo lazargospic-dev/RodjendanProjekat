@@ -29,6 +29,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvSlavljenici.DataSource = null;
             dgvSlavljenici.DataSource = repo.GetAll();
+            dgvSlavljenici.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvSlavljenici_SelectionChanged(object sender, EventArgs e)
@@ -42,6 +45,11 @@ namespace RodjendanProjekat.Forms
 
                 foreach (Klijent k in cmbKlijent.Items)
                     if (k.KlijentId == s.KlijentId) { cmbKlijent.SelectedItem = k; break; }
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
 

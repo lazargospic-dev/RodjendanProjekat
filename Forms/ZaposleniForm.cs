@@ -36,6 +36,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvZaposleni.DataSource = null;
             dgvZaposleni.DataSource = repo.GetAll();
+            dgvZaposleni.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvZaposleni_SelectionChanged(object sender, EventArgs e)
@@ -47,6 +50,11 @@ namespace RodjendanProjekat.Forms
                 txtPrezime.Text = z.Prezime;
                 txtTelefon.Text = z.Telefon;
                 cmbPozicija.Text = z.Pozicija;
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
 

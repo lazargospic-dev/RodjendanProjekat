@@ -58,6 +58,10 @@ namespace RodjendanProjekat.Forms
         {
             dgvRezervacije.DataSource = null;
             dgvRezervacije.DataSource = repo.GetAll();
+            dgvRezervacije.ClearSelection();
+            if (dgvRezervacije.Rows.Count > 0) dgvRezervacije.CurrentCell = null;
+            selectedId = null;
+            Clear();
         }
 
         private void dgvRezervacije_SelectionChanged(object sender, EventArgs e)
@@ -82,6 +86,12 @@ namespace RodjendanProjekat.Forms
 
                 foreach (Sala sa in cmbSala.Items)
                     if (sa.SalaId == r.SalaId) { cmbSala.SelectedItem = sa; break; }
+            }
+            else
+            {
+                // No current selection - clear selectedId and reset input fields
+                selectedId = null;
+                Clear();
             }
         }
 

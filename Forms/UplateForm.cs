@@ -44,6 +44,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvUplate.DataSource = null;
             dgvUplate.DataSource = repo.GetAll();
+            dgvUplate.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvUplate_SelectionChanged(object sender, EventArgs e)
@@ -58,6 +61,11 @@ namespace RodjendanProjekat.Forms
                 dtpDatumUplate.Value = u.DatumUplate;
                 txtIznos.Text = u.Iznos.ToString();
                 cmbNacinPlacanja.Text = u.NacinPlacanja;
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
 

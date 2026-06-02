@@ -20,6 +20,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvUsluge.DataSource = null;
             dgvUsluge.DataSource = repo.GetAll();
+            dgvUsluge.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvUsluge_SelectionChanged(object sender, EventArgs e)
@@ -30,6 +33,11 @@ namespace RodjendanProjekat.Forms
                 txtNaziv.Text = u.Naziv;
                 txtCena.Text = u.Cena.ToString();
                 txtOpis.Text = u.Opis;
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
 

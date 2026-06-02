@@ -20,6 +20,9 @@ namespace RodjendanProjekat.Forms
         {
             dgvSale.DataSource = null;
             dgvSale.DataSource = repo.GetAll();
+            dgvSale.ClearSelection();
+            selectedId = null;
+            Clear();
         }
 
         private void dgvSale_SelectionChanged(object sender, EventArgs e)
@@ -30,6 +33,11 @@ namespace RodjendanProjekat.Forms
                 txtNaziv.Text = s.Naziv;
                 txtKapacitet.Text = s.Kapacitet.ToString();
                 txtOpis.Text = s.Opis;
+            }
+            else
+            {
+                selectedId = null;
+                Clear();
             }
         }
         private void label1_Click(object sender, EventArgs e)
